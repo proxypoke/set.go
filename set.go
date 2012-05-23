@@ -31,6 +31,7 @@ type Interface interface {
 	Discard(x interface{}) bool
 	Contains(x interface{}) bool
 	Members() []interface{}
+	Copy() Interface
 }
 
 // Add adds an element to the set. Its time complexity is O(1). It returns true
@@ -53,8 +54,14 @@ func Contains(set Interface, x interface{}) bool {
 
 // Members returns a slice containing all elements in the set. Its time
 // complexity is O(n), where n = Len(set).
-func Members(set Interface, x interface{}) []interface{} {
+func Members(set Interface) []interface{} {
 	return set.Members()
+}
+
+// Copy returns a new instance of the implementing type containing all valyes
+// of the given instance.
+func Copy(set Interface) Interface {
+	return set.Copy()
 }
 
 // Len gives the size (or cardinality) or a set. Its time complexity is O(n),
@@ -78,9 +85,7 @@ func IsSubset(s, t Interface) bool {
 // elements which are in either set. Its time complexity is // O(n+m), where 
 // n = Len(s) and m = Len(t).
 func Union(s, t Interface) (u Interface) {
-	for _, x := range s.Members() {
-		u.Add(x)
-	}
+	u = s.Copy()
 	for _, x := range t.Members() {
 		u.Add(x)
 	}
@@ -91,9 +96,10 @@ func Union(s, t Interface) (u Interface) {
 // contains all elements which are in both sets. Its time complexity is O(n),
 // where n = Len(s).
 func Intersection(s, t Interface) (u Interface) {
+	u = s.Copy()
 	for _, x := range s.Members() {
-		if t.Contains(x) {
-			u.Add(x)
+		if !t.Contains(x) {
+			u.Discard(x)
 		}
 	}
 	return
@@ -103,9 +109,10 @@ func Intersection(s, t Interface) (u Interface) {
 // the elements in s which are not in t. Its time complexity is O(n), where 
 // n = Len(t).
 func Difference(s, t Interface) (u Interface) {
-	for _, x := range s.Members() {
-		if !t.Contains(x) {
-			u.Add(x)
+	u = s.Copy()
+	for _, x := range t.Members() {
+		if u.Contains(x) {
+			u.Discard(x)
 		}
 	}
 	return
