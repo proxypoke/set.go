@@ -74,6 +74,9 @@ func IsSubset(s, t Interface) bool {
 	return true
 }
 
+// Union does a set union over s and t, returning a set that contains all
+// elements which are in either set. Its time complexity is // O(n+m), where 
+// n = Len(s) and m = Len(t).
 func Union(s, t Interface) (u Interface) {
 	for _, x := range s.Members() {
 		u.Add(x)
@@ -84,6 +87,9 @@ func Union(s, t Interface) (u Interface) {
 	return
 }
 
+// Intersection does a set intersection over s and t, returning a set that
+// contains all elements which are in both sets. Its time complexity is O(n),
+// where n = Len(s).
 func Intersection(s, t Interface) (u Interface) {
 	for _, x := range s.Members() {
 		if t.Contains(x) {
@@ -93,6 +99,9 @@ func Intersection(s, t Interface) (u Interface) {
 	return
 }
 
+// Difference does a set difference over s and t, returning a set that contains
+// the elements in s which are not in t. Its time complexity is O(n), where 
+// n = Len(t).
 func Difference(s, t Interface) (u Interface) {
 	for _, x := range s.Members() {
 		if !t.Contains(x) {
