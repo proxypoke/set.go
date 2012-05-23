@@ -33,26 +33,38 @@ type Interface interface {
 	Members() []interface{}
 }
 
+// Add adds an element to the set. Its time complexity is O(1). It returns true
+// if that element wasn't in the set before, and false if it was.
 func Add(set Interface, x interface{}) bool {
 	return set.Add(x)
 }
 
+// Discard removes an from the set. Its time complexity is O(1). It returns
+// true when the element was in the set, and false if it wasn't.
 func Discard(set Interface, x interface{}) bool {
 	return set.Discard(x)
 }
 
+// Contains returns a boolean value indicating whether x is in the set (true)
+// or not (false). Its time complexity is O(1).
 func Contains(set Interface, x interface{}) bool {
 	return set.Contains(x)
 }
 
+// Members returns a slice containing all elements in the set. Its time
+// complexity is O(n), where n = Len(set).
 func Members(set Interface, x interface{}) []interface{} {
 	return set.Members()
 }
 
+// Len gives the size (or cardinality) or a set. Its time complexity is O(n),
+// where n is the number of elements in the set.
 func Len(set Interface) int {
 	return len(set.Members())
 }
 
+// IsSubset indicates whether a t is a subset of s (true) or not (false). Its
+// time complexity is O(n) where n = Len(t).
 func IsSubset(s, t Interface) bool {
 	for _, x := range t.Members() {
 		if !s.Contains(x) {
