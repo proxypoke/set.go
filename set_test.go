@@ -47,7 +47,6 @@ func TestInterface(test *testing.T) {
 		if !set.Contains(s, i) {
 			test.Errorf("Contains() returned false for existing element %v", i)
 		}
-		t := set.Copy(s)
 		if !set.Discard(s, i) {
 			test.Errorf("Discard() returned false for existing element %v", i)
 		}
